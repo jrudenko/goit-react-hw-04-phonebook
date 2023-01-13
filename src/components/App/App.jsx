@@ -32,36 +32,29 @@ function App() {
   }, [contacts]);
 
 
- const addContact = ({ name, number }) => {
-      const findName = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())
-        if (findName) {
-            return alert(`${name} is already in contacts.`);
-        }
+  const addContact = ({ name, number }) => {
+    const findName = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())
+    if (findName) {
+      return alert(`${name} is already in contacts.`);
+    }
 
-        const findNumber = contacts.find(contact => contact.number === number);
+    const findNumber = contacts.find(contact => contact.number === number);
     if (findNumber) {
       return alert(`This phone number is already in use.`);
-   };
-   const newContact = {
+    };
+    const newContact = {
       id: nanoid(),
       name,
       number,
     };
 
     setContacts(contacts => [...contacts, newContact]);
-  };
-    
+  };    
 
-    // getContacts = () => {
-    //     const { filter, contacts } = this.state;
-    //     const normalizedFind = filter.toLowerCase();
-    //     return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFind));
-    // };
-
-    const deleteContact = contactId => {
-    setContacts(contacts => contacts.filter(contact => contact.id !== contactId),
+    function deleteContact(contactId) {
+    setContacts(contacts => contacts.filter(contact => contact.id !== contactId)
     );
-  };
+  }
 
    const handleFilter = e => {
     setFilter(e.currentTarget.value);
