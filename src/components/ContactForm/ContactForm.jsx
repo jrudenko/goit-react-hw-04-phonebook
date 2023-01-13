@@ -1,38 +1,37 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import { useState } from 'react';
 import { Form, Label, Input, Button } from './ContactForm.styled';
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+function ContactForm({ onSubmit }) { 
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
     
-    handleChange = e => {
+  const handleChange = e => {
     const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
+    
+    switch (name) {
+      case 'name': setName(value);
+        break;
+      case 'number': setNumber(value);
+        break;
+      default: break;
+    }
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.reset();
+    onSubmit({name: name, number: number});
+    reset();
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
-
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-  };
-
-  render() {
-    const { name, number } = this.state;
 
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Label htmlFor={this.nameId}>
+      <Form onSubmit={handleSubmit}>
+        <Label>
           Name
           <Input
             type="text"
@@ -41,12 +40,12 @@ class ContactForm extends Component {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             value={name}
-            onChange={this.handleChange}
+            onChange={handleChange}
             placeholder="Enter your name..."
           />
         </Label>
 
-        <Label htmlFor={this.numberId}>
+        <Label>
           Number
           <Input
             type="tel"
@@ -55,7 +54,7 @@ class ContactForm extends Component {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
             value={number}
-            onChange={this.handleChange}
+            onChange={handleChange}
             placeholder="Enter your number..."
           />
         </Label>
@@ -63,9 +62,10 @@ class ContactForm extends Component {
         <Button type="submit">Add contact</Button>
       </Form>
     );
-  };
-
 
 };
 
+  ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
 export default ContactForm;
